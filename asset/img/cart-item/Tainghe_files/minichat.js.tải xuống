@@ -1,0 +1,58 @@
+function getManifestLoaded () {
+  const performances = performance && performance.getEntriesByType ? performance.getEntriesByType('resource') : []
+  const manifestLoad = performances.find(p => {
+    return p.initiatorType === 'script' && p.name.includes('minichat.js')
+  })
+  return manifestLoad ? Math.floor(manifestLoad.duration) : 0
+}
+window.__INDEX_HTML_LOADED__ = getManifestLoaded()
+window.__START_MINICHAT__ = Date.now() - window.__INDEX_HTML_LOADED__
+if (performance && performance.mark) {
+  performance.mark('HTML_LOADED')
+}
+/* eslint-disable */
+var files = 'app~21833f8f.4664c7d4641063ce710a.js,app~748942c6.430e45f8f2a688ff55ea.js,styles~21833f8f.fbf22a517c5350f4224c.js,vendors~0f485567.9188bb446925d8f81000.js,vendors~253ae210.6500edfcaac7bfef5798.js,vendors~7274e1de.7eee7e753b21f47c903c.js,vendors~8004e7d2.a37f0d5c72ab91bd54fd.js,vendors~9c5b28f6.ffe23fcf30f49584e44c.js,vendors~ccfeb0d6.0f489fed56497444dc32.js,vendors~cefe50a8.1efdd83c3f3564095ec7.js,vendors~d2a6a9a2.e3db40d424aa36909f82.js,vendors~db300d2f.9ac0e4b68ce8d820b557.js,vendors~ec8c427e.5e4c812b56af98479855.js,styles~21833f8f.751a9b8c5be17ab83c88.css'
+var isFromLocal = false
+var buildTime = 'Wed Aug 18 2021 20:28:37 GMT+0800 (+08)'
+var buildEnv = 'live'
+var buildRegion = 'vn'
+var host = window.location.href
+var isVisitingCN = host.indexOf('cn') > -1
+var cdnDomain = !!isFromLocal
+  ? ''
+  : isVisitingCN
+    ? 'https://deo.shopeesz.com/shopee/shopee-seller-' + buildEnv + '-' + buildRegion
+    : 'https://deo.shopeemobile.com/shopee/shopee-seller-' + buildEnv + '-' + buildRegion
+/* eslint-enable */
+function createAssetScriptTags (fileNames) {
+  console.log('MiniChat Build Time: ', buildTime)
+  var files = fileNames.split(',')
+  var fileLength = files.length
+  var fragment = document.createDocumentFragment()
+  if (fileLength) {
+    for (var i = 0; i < fileLength; i++) {
+      var jsFile = files[i].indexOf('js') > -1
+      var cssFile = files[i].indexOf('css') > -1
+      var fileUrl = cdnDomain + '/chateasy/' + files[i]
+      if (jsFile) {
+        var jstag = document.createElement('script')
+        jstag.src = fileUrl
+        jstag.type = 'text/javascript'
+        jstag.charset = 'utf-8'
+        if (jstag) {
+          fragment.appendChild(jstag)
+        }
+      } else if (cssFile) {
+        var csstag = document.createElement('link')
+        csstag.href = fileUrl
+        csstag.rel = 'stylesheet'
+        csstag.type = 'text/css'
+        if (csstag) {
+          fragment.appendChild(csstag)
+        }
+      }
+    }
+    document.body.appendChild(fragment)
+  }
+}
+createAssetScriptTags(files)
